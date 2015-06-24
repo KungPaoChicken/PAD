@@ -3,7 +3,7 @@ package assignment6.Cluster;
 import assignment6.UnitRow;
 
 public class Node implements Cluster {
-    public Cluster child1, child2;
+    private Cluster child1, child2;
 
     public Node(Cluster child1, Cluster child2) {
         this.child1 = child1;
@@ -36,5 +36,13 @@ public class Node implements Cluster {
     @Override
     public Node copy(){
         return new Node(child1.copy(),child2.copy());
+    }
+
+    public Cluster getChild1(){
+        return child1;
+    }
+
+    public Cluster getChild2(){
+        return child2;
     }
 }

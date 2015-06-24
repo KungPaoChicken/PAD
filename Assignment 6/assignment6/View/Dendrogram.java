@@ -52,10 +52,10 @@ public class Dendrogram implements View {
     }
 
     private int drawNode(Node node, int unitsDrawn, Colour colour) {
-        int x1 = getX(node.child1);
-        int x2 = getX(node.child2);
-        int y1 = drawCluster(node.child1, unitsDrawn, colour);
-        int y2 = drawCluster(node.child2, unitsDrawn + node.child1.getWidth(), colour);
+        int x1 = getX(node.getChild1());
+        int x2 = getX(node.getChild2());
+        int y1 = drawCluster(node.getChild1(), unitsDrawn, colour);
+        int y2 = drawCluster(node.getChild2(), unitsDrawn + node.getChild1().getWidth(), colour);
         int x = getX(node);
         int y = (y1 + y2) / 2;
 

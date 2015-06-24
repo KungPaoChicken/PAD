@@ -30,6 +30,7 @@ public class Clustering {
 
     Clustering() {
         Locale.setDefault(Locale.US);
+        ui = new ClusterUI(GRAPH_WIDTH, GRAPH_HEIGHT, PADDING);
     }
 
     private DistanceMeasure getDistanceMeasure(String distanceMeasure) {
@@ -80,23 +81,21 @@ public class Clustering {
     public void start() throws FileNotFoundException {
         if (!UIAuxiliaryMethods.askUserForInput()) {
             System.out.println("File opening cancelled/failed");
-            return;
+        }else {
+            Dataset dataset = Parser.fromScanner(new Scanner(System.in)).normalize().preselect(PRESELECTION_LIMIT);
+            clusters = new ClusterRow(dataset);
+
+            String distanceMeasure = ui.askForChoice("Please select the distance measure", "Manhattan", "Euclidean", "Pearson");
+            String clusterMethod = ui.askForChoice("Please select the clustering method", "Single", "Average", "Complete");
+            ClusterMethod cm = getClusteringMethod(clusterMethod, getDistanceMeasure(distanceMeasure));
+            clusterer = new Clusterer(clusters, cm, dataset.getClusterLimit());
+
+            String view = ui.askForChoice("Please select the view", "Cartesian", "Dendrogram");
+            ui.extractData(dataset, clusterer);
+            ui.useView(view);
+
+            ui.render(clusters);
         }
-        Dataset dataset = Parser.fromScanner(new Scanner(System.in)).normalize().preselect(PRESELECTION_LIMIT);
-        clusters = new ClusterRow(dataset);
-
-        ui = new ClusterUI(GRAPH_WIDTH, GRAPH_HEIGHT, PADDING);
-
-        String distanceMeasure = ui.askForChoice("Please select the distance measure", "Manhattan", "Euclidean", "Pearson");
-        String clusterMethod = ui.askForChoice("Please select the clustering method", "Single", "Average", "Complete");
-        ClusterMethod cm = getClusteringMethod(clusterMethod, getDistanceMeasure(distanceMeasure));
-        clusterer = new Clusterer(clusters, cm, dataset.getClusterLimit());
-
-        String view = ui.askForChoice("Please select the view", "Cartesian", "Dendrogram");
-        ui.extractData(dataset, clusterer);
-        ui.useView(view);
-
-        ui.render(clusters);
         processEvents(ui);
     }
 

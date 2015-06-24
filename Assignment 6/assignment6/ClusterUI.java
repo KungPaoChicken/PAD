@@ -12,9 +12,11 @@ public class ClusterUI {
     public static final String CARTESIAN = "Cartesian";
     public static final String DENDROGRAM = "Dendrogram";
     private static final Colour BLACK = new Colour(0, 0, 0);
-    private static final int NAVIGATION_HEIGHT = 40;
-    private static final int TEXT_HEIGHT = 20;
+    private static final Colour WHITE = new Colour(255, 255, 255);
+    private static final int BAR_HEIGHT = 40;
+    private static final int MENU_Y=250;
     private static final int BUTTON_HEIGHT = 40;
+    private static final int TEXT_HEIGHT = 20;
 
     private DrawUserInterface ui;
     private int canvasWidth, canvasHeight, graphPadding;
@@ -29,7 +31,7 @@ public class ClusterUI {
 
     ClusterUI(int graphWidth, int graphHeight, int graphPadding) {
         uiWidth = graphWidth;
-        uiHeight = graphHeight + NAVIGATION_HEIGHT;
+        uiHeight = graphHeight + BAR_HEIGHT;
         ui = UserInterfaceFactory.getDrawUI(uiWidth, uiHeight);
         canvasWidth = graphWidth - 2 * graphPadding;
         canvasHeight = graphHeight - 2 * graphPadding;
@@ -44,13 +46,12 @@ public class ClusterUI {
     }
 
     private void drawMenu(String question, String... options) {
-        int height = 250;
         int padding = uiWidth / (options.length + 2);
-        ui.drawText(padding, height + BUTTON_HEIGHT + TEXT_HEIGHT / 2, question, BLACK);
+        ui.drawText(padding, MENU_Y + BUTTON_HEIGHT + TEXT_HEIGHT / 2, question, BLACK);
         for (int i = 0; i < options.length; i++) {
-            ui.drawSquare(padding + i * padding, height + BUTTON_HEIGHT, padding, BUTTON_HEIGHT, BLACK, false);
-            ui.setSquareHotspot(padding + i * padding, height + BUTTON_HEIGHT, padding, BUTTON_HEIGHT, options[i]);
-            ui.drawText(padding + i * padding + padding / 3, height + 15, options[i], BLACK);
+            ui.drawSquare(padding + i * padding, MENU_Y + BUTTON_HEIGHT, padding, BUTTON_HEIGHT, BLACK, false);
+            ui.setSquareHotspot(padding + i * padding, MENU_Y + BUTTON_HEIGHT, padding, BUTTON_HEIGHT, options[i]);
+            ui.drawText(padding + i * padding + padding / 3, MENU_Y + 15, options[i], BLACK);
         }
     }
 
@@ -99,8 +100,8 @@ public class ClusterUI {
 
     public void render(ClusterRow clusters) {
         ui.clear();
-        drawTopBar(unitSize - clusters.size());
         graph.draw(clusters);
+        drawTopBar(unitSize - clusters.size());
         ui.showChanges();
     }
 
@@ -109,25 +110,32 @@ public class ClusterUI {
     }
 
     private void drawTopBar(int clusteringStep) {
-        final int openFileLine = 100;
-        ui.drawLine(0, uiHeight - NAVIGATION_HEIGHT, uiWidth, uiHeight - NAVIGATION_HEIGHT, BLACK);
-        drawStatusText(20, "Open file");
-        ui.drawLine(openFileLine, uiHeight - NAVIGATION_HEIGHT, openFileLine, uiHeight, BLACK);
-        ui.setSquareHotspot(0, uiHeight, openFileLine, NAVIGATION_HEIGHT, "openFile");
+        final int textPadding = 20;
 
-        drawStatusText(openFileLine + 20, elementType);
+        ui.drawSquare(0, uiHeight, uiWidth, BAR_HEIGHT, WHITE, true);
+        ui.drawLine(0, uiHeight - BAR_HEIGHT, uiWidth, uiHeight - BAR_HEIGHT, BLACK);
 
-        ui.drawLine(250, uiHeight - NAVIGATION_HEIGHT, 250, uiHeight, BLACK);
-        drawStatusText(270, distanceMeasure);
+        drawStatusText(textPadding, "Open file");
+        ui.setSquareHotspot(0, uiHeight, 100, BAR_HEIGHT, "openFile");
 
-        ui.drawLine(350, uiHeight - NAVIGATION_HEIGHT, 350, uiHeight, BLACK);
-        drawStatusText(370, clusterMethod);
+        drawDivider(100);
+        drawStatusText(100 + textPadding, elementType);
+
+        drawDivider(250);
+        drawStatusText(250 + textPadding, distanceMeasure);
+
+        drawDivider(350);
+        drawStatusText(350 + textPadding, clusterMethod);
 
         drawStatusText(uiWidth - 200, "Clustering step " + clusteringStep + " of " + totalClusterSteps);
     }
 
+    private void drawDivider(int x){
+        ui.drawLine(x, uiHeight - BAR_HEIGHT, x, uiHeight, BLACK);
+    }
+
     private void drawStatusText(int width, String text) {
-        ui.drawText(width, uiHeight - NAVIGATION_HEIGHT / 2 - 5, text, BLACK);
+        ui.drawText(width, uiHeight - BAR_HEIGHT / 2 - 5, text, BLACK);
     }
 
 }
