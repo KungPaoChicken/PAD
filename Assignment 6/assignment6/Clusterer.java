@@ -10,13 +10,17 @@ public class Clusterer {
     private int clusteringLimit;
 
     Clusterer(ClusterRow clusters, ClusterMethod method, int limit) {
-        originalClusters = clusters;
-        this.clusters = clusters.copy();
+        originalClusters = clusters.copy();
+        this.clusters = clusters;
         clusterer = method;
         clusteringLimit = limit;
     }
 
-    public void changeClusteringMethod(ClusterMethod method) {
+    public ClusterMethod getClusterMethod(){
+        return clusterer;
+    }
+
+    public void changeClusterMethod(ClusterMethod method) {
         clusterer = method;
     }
 

@@ -9,7 +9,7 @@ import ui.Event;
 import ui.UserInterfaceFactory;
 
 public class ClusterUI {
-    public static final String CARTESIAN = "2D Cartesian";
+    public static final String CARTESIAN = "Cartesian";
     public static final String DENDROGRAM = "Dendrogram";
     private static final Colour BLACK = new Colour(0, 0, 0);
     private static final int NAVIGATION_HEIGHT = 40;
@@ -17,12 +17,15 @@ public class ClusterUI {
     private static final int BUTTON_HEIGHT = 40;
 
     private DrawUserInterface ui;
-    private int totalClusterSteps;
-    private View graph;
-    private String xLabel, yLabel;
-    private int unitSize;
     private int canvasWidth, canvasHeight, graphPadding;
     private int uiWidth, uiHeight;
+    private View graph;
+
+    private String elementType;
+    private String clusterMethod, distanceMeasure;
+    private String xLabel, yLabel;
+    private int totalClusterSteps;
+    private int unitSize;
 
     ClusterUI(int graphWidth, int graphHeight, int graphPadding) {
         uiWidth = graphWidth;
@@ -33,9 +36,9 @@ public class ClusterUI {
         this.graphPadding = graphPadding;
     }
 
-    public String askForChoice(String question, String... options){
+    public String askForChoice(String question, String... options) {
         ui.clear();
-        drawMenu(question,options);
+        drawMenu(question, options);
         ui.showChanges();
         return getResponseFromChoices(options);
     }
@@ -64,15 +67,25 @@ public class ClusterUI {
         }
     }
 
-    public ClusterUI useView(String view) {
+    public void extractData(Dataset dataset, Clusterer clusterer) {
+        elementType = dataset.getElementType();
+        xLabel = dataset.variableNameAt(0);
+        yLabel = dataset.variableNameAt(1);
+        totalClusterSteps = dataset.getElementsSize() - dataset.getClusterLimit();
+        unitSize = dataset.getElementsSize();
+        distanceMeasure = clusterer.getClusterMethod().getDistanceMeasure().getName();
+        clusterMethod = clusterer.getClusterMethod().getName();
+    }
+
+    public void useView(String view) {
         switch (view) {
             case CARTESIAN:
                 graph = new Cartesian(ui, canvasWidth, canvasHeight, graphPadding, xLabel, yLabel);
+                break;
             case DENDROGRAM:
             default:
                 graph = new Dendrogram(ui, canvasWidth, canvasHeight, graphPadding, unitSize);
         }
-        return this;
     }
 
     public ClusterUI toggleView() {
@@ -84,18 +97,11 @@ public class ClusterUI {
         return this;
     }
 
-    public void setParameters(Dataset dataset, ClusterRow clusters, String distanceMeasure, String clusterMethod) {
-        totalClusterSteps = clusters.size() - dataset.getClusterLimit();
-        xLabel = dataset.variableNameAt(0);
-        yLabel = dataset.variableNameAt(1);
-        unitSize = clusters.size();
-
-    }
-
     public void render(ClusterRow clusters) {
         ui.clear();
         drawTopBar(unitSize - clusters.size());
         graph.draw(clusters);
+        ui.showChanges();
     }
 
     public Event getEvent() {
@@ -108,9 +114,15 @@ public class ClusterUI {
         drawStatusText(20, "Open file");
         ui.drawLine(openFileLine, uiHeight - NAVIGATION_HEIGHT, openFileLine, uiHeight, BLACK);
         ui.setSquareHotspot(0, uiHeight, openFileLine, NAVIGATION_HEIGHT, "openFile");
-        drawStatusText(openFileLine + 20, "Euclidean");
+
+        drawStatusText(openFileLine + 20, elementType);
+
         ui.drawLine(250, uiHeight - NAVIGATION_HEIGHT, 250, uiHeight, BLACK);
-        drawStatusText(270, "Single Linkage");
+        drawStatusText(270, distanceMeasure);
+
+        ui.drawLine(350, uiHeight - NAVIGATION_HEIGHT, 350, uiHeight, BLACK);
+        drawStatusText(370, clusterMethod);
+
         drawStatusText(uiWidth - 200, "Clustering step " + clusteringStep + " of " + totalClusterSteps);
     }
 

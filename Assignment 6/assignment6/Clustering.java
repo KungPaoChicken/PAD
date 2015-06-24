@@ -13,6 +13,7 @@ import ui.UIAuxiliaryMethods;
 
 import java.io.FileNotFoundException;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class Clustering {
     private static final int PRESELECTION_LIMIT = 50;
@@ -23,9 +24,9 @@ public class Clustering {
     private static final int GRAPH_WIDTH = CANVAS_WIDTH + 2 * PADDING;
     private static final int GRAPH_HEIGHT = CANVAS_HEIGHT + 2 * PADDING;
 
-    private Dataset dataset;
     private ClusterRow clusters;
     private Clusterer clusterer;
+    ClusterUI ui;
 
     Clustering() {
         Locale.setDefault(Locale.US);
@@ -55,10 +56,6 @@ public class Clustering {
         }
     }
 
-    private String getView() {
-        return UIAuxiliaryMethods.askUserForChoice("Please select the view:", ClusterUI.CARTESIAN, ClusterUI.DENDROGRAM);
-    }
-
     private void processEvents(ClusterUI ui) {
         while (true) {
             Event e = ui.getEvent();
@@ -81,25 +78,26 @@ public class Clustering {
     }
 
     public void start() throws FileNotFoundException {
-//        if (!UIAuxiliaryMethods.askUserForInput()) {
-//            System.out.println("File opening cancelled/failed");
-//            return;
-//        }
-//        dataset = Parser.fromScanner(new Scanner(System.in)).normalize().preselect(PRESELECTION_LIMIT);
-//        clusters = new ClusterRow(dataset);
-//        clusterer = new Clusterer(clusters, getClusteringMethod(getDistanceMeasure()), dataset.getClusterLimit());
-//
-//        String view = getView();
+        if (!UIAuxiliaryMethods.askUserForInput()) {
+            System.out.println("File opening cancelled/failed");
+            return;
+        }
+        Dataset dataset = Parser.fromScanner(new Scanner(System.in)).normalize().preselect(PRESELECTION_LIMIT);
+        clusters = new ClusterRow(dataset);
 
-        ClusterUI ui = new ClusterUI(GRAPH_WIDTH, GRAPH_HEIGHT, PADDING);
+        ui = new ClusterUI(GRAPH_WIDTH, GRAPH_HEIGHT, PADDING);
+
         String distanceMeasure = ui.askForChoice("Please select the distance measure", "Manhattan", "Euclidean", "Pearson");
         String clusterMethod = ui.askForChoice("Please select the clustering method", "Single", "Average", "Complete");
         ClusterMethod cm = getClusteringMethod(clusterMethod, getDistanceMeasure(distanceMeasure));
+        clusterer = new Clusterer(clusters, cm, dataset.getClusterLimit());
+
         String view = ui.askForChoice("Please select the view", "Cartesian", "Dendrogram");
+        ui.extractData(dataset, clusterer);
         ui.useView(view);
 
-//        ui.render(clusters);
-//        processEvents(ui);
+        ui.render(clusters);
+        processEvents(ui);
     }
 
     public static void main(String[] args) {

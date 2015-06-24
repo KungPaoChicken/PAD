@@ -18,14 +18,14 @@ public class Parser {
         elementSize = scanner.nextInt();
         variableSize = scanner.nextInt();
 
-        scanner.next(); //Skipping the first item of the header (type of variables)
+        String elementType=scanner.next(); //Skipping the first item of the header (type of variables)
         String[] variableNames = scanVariableNames(scanner);
 
         scanner.nextLine();  //Getting pass the header line
         UnitRow units = scanUnits(scanner);
 
         scanner.close();
-        return new Dataset(clusterLimit, elementSize, variableSize, variableNames, units);
+        return new Dataset(clusterLimit, elementSize, variableSize, elementType, variableNames, units);
     }
 
     private static String[] scanVariableNames(Scanner scanner) {

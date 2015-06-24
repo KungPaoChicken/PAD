@@ -12,4 +12,5 @@ public interface DistanceMeasure {
 	 */
 	double calculateDistance(Unit unit1, Unit unit2);
 
+	String getName();
 }

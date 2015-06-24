@@ -1,9 +1,10 @@
 package assignment6.ClusterMethod;
 
 import assignment6.Cluster.Cluster;
+import assignment6.DistanceMeasure.DistanceMeasure;
 
 public interface ClusterMethod {
-	
+
 	/**
 	 * Calculates the distance between two clusters based on a
 	 * cluster method and a distance measure.
@@ -12,5 +13,8 @@ public interface ClusterMethod {
 	 * @return The distance between cluster1 and cluster2.
 	 */
 	double calculateDistance(Cluster cluster1, Cluster cluster2);
-	
+
+    DistanceMeasure getDistanceMeasure();
+
+    String getName();
 }

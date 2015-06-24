@@ -4,12 +4,14 @@ import assignment6.Cluster.Cluster;
 import assignment6.DistanceMeasure.DistanceMeasure;
 
 public class CompleteLinkage implements ClusterMethod {
+    private static final String NAME = "Complete Linkage";
     private DistanceMeasure method;
 
     public CompleteLinkage(DistanceMeasure distanceMeasure) {
         method = distanceMeasure;
     }
 
+    @Override
     public double calculateDistance(Cluster cluster1, Cluster cluster2) {
         double maxDistance = 0;
         for (int i = 0; i < cluster1.getUnits().size(); i++) {
@@ -18,5 +20,15 @@ public class CompleteLinkage implements ClusterMethod {
             }
         }
         return maxDistance;
+    }
+
+    @Override
+    public DistanceMeasure getDistanceMeasure() {
+        return method;
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 }

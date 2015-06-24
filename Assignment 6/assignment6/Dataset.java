@@ -2,23 +2,33 @@ package assignment6;
 
 public class Dataset {
     private int clusterLimit, elementsSize, variableSize;
+    private String elementType;
     private String[] variableNames;
     private UnitRow units;
 
-    Dataset(int clusterLimit, int elementsSize, int variableSize, String[] variableNames, UnitRow units) {
+    Dataset(int clusterLimit, int elementsSize, int variableSize, String elementType, String[] variableNames, UnitRow units) {
         this.clusterLimit = clusterLimit;
         this.elementsSize = elementsSize;
         this.variableSize = variableSize;
+        this.elementType = elementType;
         this.variableNames = variableNames;
         this.units = units;
     }
 
-    public int getClusterLimit(){
+    public int getClusterLimit() {
         return clusterLimit;
     }
 
-    public int getElementsSize(){
+    public int getElementsSize() {
         return elementsSize;
+    }
+
+    public int getVariableSize() {
+        return variableSize;
+    }
+
+    public String getElementType() {
+        return elementType;
     }
 
     public String variableNameAt(int index) {
@@ -92,7 +102,7 @@ public class Dataset {
             preselectedRows.addUnit(new Unit(unitNameAt(i), variables));
         }
 
-        return new Dataset(clusterLimit, elementsSize, limit, names, preselectedRows);
+        return new Dataset(clusterLimit, elementsSize, limit, elementType, names, preselectedRows);
     }
 
     private double minOfColumn(int index) {

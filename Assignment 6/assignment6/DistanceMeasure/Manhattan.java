@@ -3,6 +3,8 @@ package assignment6.DistanceMeasure;
 import assignment6.Unit;
 
 public class Manhattan implements DistanceMeasure {
+    private static final String NAME = "Manhattan";
+
     public Manhattan() {
 
     }
@@ -13,5 +15,10 @@ public class Manhattan implements DistanceMeasure {
             summedManhattanDistance += Math.abs(unit1.elementAt(i) - unit2.elementAt(i));
         }
         return summedManhattanDistance;
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 }

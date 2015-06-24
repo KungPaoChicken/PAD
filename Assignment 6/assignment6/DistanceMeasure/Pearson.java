@@ -3,6 +3,8 @@ package assignment6.DistanceMeasure;
 import assignment6.Unit;
 
 public class Pearson implements DistanceMeasure {
+    private static final String NAME = "Pearson";
+
     public Pearson() {
 
     }
@@ -38,5 +40,10 @@ public class Pearson implements DistanceMeasure {
             sum += unit.elementAt(i);
         }
         return sum / unit.size();
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 }

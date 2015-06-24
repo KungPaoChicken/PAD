@@ -1,9 +1,9 @@
 package assignment5.ClusterMethod;
 
-import assignment6.Cluster.Cluster;
-import assignment6.DistanceMeasure.DistanceMeasure;
+import assignment5.Cluster.Cluster;
+import assignment5.DistanceMeasure.DistanceMeasure;
 
-public class AverageLinkage implements assignment6.ClusterMethod.ClusterMethod {
+public class AverageLinkage implements ClusterMethod {
     private DistanceMeasure method;
 
     public AverageLinkage(DistanceMeasure distanceMeasure) {
