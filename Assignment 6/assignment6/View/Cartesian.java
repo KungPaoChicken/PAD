@@ -7,6 +7,7 @@ import ui.Colour;
 import ui.DrawUserInterface;
 
 public class Cartesian implements View {
+    private static final String NAME="Cartesian";
     private static final Colour BLACK = new Colour(0, 0, 0);
     //getTextHeight gives a constant anyway
     private static final int TEXT_HEIGHT = 21;
@@ -29,6 +30,11 @@ public class Cartesian implements View {
     }
 
     @Override
+    public String getName(){
+        return NAME;
+    }
+
+    @Override
     public void draw(ClusterRow clusters) {
         Palette palette = new Palette();
         drawBackground();
@@ -42,14 +48,14 @@ public class Cartesian implements View {
         canvas.drawText(padding - YLABEL_OFFSET, padding + height + padding / 2 - TEXT_HEIGHT / 2, yLabel, BLACK);
     }
 
-    private void drawClusters(ClusterRow clusters, Palette palette){
+    private void drawClusters(ClusterRow clusters, Palette palette) {
         for (int i = 0; i < clusters.size(); i++) {
             Colour colour = palette.nextColour();
             drawCluster(clusters.clusterAt(i), colour);
         }
     }
 
-    private void drawCluster(Cluster cluster, Colour colour){
+    private void drawCluster(Cluster cluster, Colour colour) {
         UnitRow units = cluster.getUnits();
         drawUnits(units, colour);
         drawBoundingCircle(cluster, colour);
@@ -59,15 +65,16 @@ public class Cartesian implements View {
         for (int i = 0; i < units.size(); i++) {
             double x = units.elementAt(i, 0);
             double y = units.elementAt(i, 1);
-            plot(x, y, colour);
+            plot(x, y, units.nameAt(i), colour);
         }
     }
 
-    private void plot(double xValue, double yValue, Colour colour) {
+    private void plot(double xValue, double yValue, String name, Colour colour) {
         int xPos = (int) (xValue * width);
         int yPos = (int) (yValue * height);
         canvas.drawCircle(actualPosition(xPos), actualPosition(yPos), POINT_SIZE, POINT_SIZE, colour, true);
         canvas.drawCircle(actualPosition(xPos), actualPosition(yPos), POINT_SIZE, POINT_SIZE, BLACK, false);
+        canvas.setCircleHotspot(actualPosition(xPos), actualPosition(yPos), POINT_SIZE, POINT_SIZE, name);
     }
 
     private int actualPosition(int graphPosition) {
@@ -75,7 +82,7 @@ public class Cartesian implements View {
     }
 
     private void drawBoundingCircle(Cluster cluster, Colour colour) {
-        UnitRow units=cluster.getUnits();
+        UnitRow units = cluster.getUnits();
         if (units.size() == 1) {
             return;
         }

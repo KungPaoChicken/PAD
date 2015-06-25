@@ -20,12 +20,18 @@ public class Clusterer {
         return clusterer;
     }
 
-    public void changeClusterMethod(ClusterMethod method) {
+    public Clusterer setClusterMethod(ClusterMethod method) {
         clusterer = method;
+        return this;
     }
 
-    public void reset() {
+    public Clusterer reset() {
         clusters = originalClusters.copy();
+        return this;
+    }
+
+    public ClusterRow getClusters(){
+        return clusters;
     }
 
     public void cluster() {

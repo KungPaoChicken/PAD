@@ -28,6 +28,11 @@ public class SingleLinkage implements ClusterMethod {
     }
 
     @Override
+    public void setDistanceMeasure(DistanceMeasure distanceMeasure){
+        method=distanceMeasure;
+    }
+
+    @Override
     public String getName(){
         return NAME;
     }

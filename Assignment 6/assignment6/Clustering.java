@@ -24,13 +24,16 @@ public class Clustering {
     private static final int GRAPH_WIDTH = CANVAS_WIDTH + 2 * PADDING;
     private static final int GRAPH_HEIGHT = CANVAS_HEIGHT + 2 * PADDING;
 
-    private ClusterRow clusters;
     private Clusterer clusterer;
     ClusterUI ui;
 
     Clustering() {
         Locale.setDefault(Locale.US);
         ui = new ClusterUI(GRAPH_WIDTH, GRAPH_HEIGHT, PADDING);
+    }
+
+    private String askForDistanceMeasure() {
+        return ui.askForChoice("Please select the distance measure", "Manhattan", "Euclidean", "Pearson");
     }
 
     private DistanceMeasure getDistanceMeasure(String distanceMeasure) {
@@ -45,57 +48,92 @@ public class Clustering {
         }
     }
 
-    private ClusterMethod getClusteringMethod(String clusteringMethod, DistanceMeasure distanceMeasure) {
+    private String askForClusterMethod() {
+        return ui.askForChoice("Please select the cluster linkage", "Single", "Average", "Complete");
+    }
+
+    private ClusterMethod getClusterMethod(String clusteringMethod, DistanceMeasure distanceMeasure) {
         switch (clusteringMethod) {
-            case "Single linkage":
+            case "Single":
                 return new SingleLinkage(distanceMeasure);
-            case "Average linkage":
+            case "Average":
                 return new AverageLinkage(distanceMeasure);
-            case "Complete linkage":
+            case "Complete":
             default:
                 return new CompleteLinkage(distanceMeasure);
         }
     }
 
+    private void showClustersNames(String name){
+        for (String action : ClusterUI.ACTIONS) {
+            if (name.equals(action)) {
+                return;
+            }
+        }
+        ui.printf(name);
+    }
+
     private void processEvents(ClusterUI ui) {
         while (true) {
             Event e = ui.getEvent();
-            if (e.name.equals("click") && e.data.equals("openFile")) {
-
+            if (e.name.equals("mouseover")) {
+                showClustersNames(e.data);
+            }
+            if (e.name.equals("mouseexit")) {
+                ui.clearStatusBar();
+            }
+            if (e.name.equals("click")) {
+                switch (e.data) {
+                    case ClusterUI.OPEN_FILE:
+                        makeViewFromFile();
+                        break;
+                    case ClusterUI.SET_DISTANCE_MEASURE:
+                        clusterer.getClusterMethod().setDistanceMeasure(getDistanceMeasure(askForDistanceMeasure()));
+                        clusterer.reset();
+                        ui.getClustererInfo(clusterer).render(clusterer.getClusters());
+                        break;
+                    case ClusterUI.SET_CLUSTER_METHOD:
+                        clusterer.setClusterMethod(getClusterMethod(askForClusterMethod(), clusterer.getClusterMethod().getDistanceMeasure())).reset();
+                        ui.getClustererInfo(clusterer).render(clusterer.getClusters());
+                        break;
+                    case ClusterUI.TOGGLE_VIEW:
+                        clusterer.reset();
+                        ui.toggleView().render(clusterer.getClusters());
+                        break;
+                }
             }
             if ((e.name.equals("other_key") && e.data.equals("Space")) || (e.name.equals("arrow") && e.data.equals("R"))) {
                 clusterer.cluster();
-                ui.render(clusters);
+                ui.render(clusterer.getClusters());
             }
-            if (e.name.equals("arrow") && e.data.equals("L")) {
-                //Going back
-                ui.render(clusters);
-            }
-            if (e.name.equals("letter") && e.data.equals("q")) {
-                //quit
+            if (e.name.equals("other_key") && e.data.equals("Escape")) {
+                System.exit(0);
                 break;
             }
         }
     }
 
-    public void start() throws FileNotFoundException {
+    public void makeViewFromFile() {
         if (!UIAuxiliaryMethods.askUserForInput()) {
             System.out.println("File opening cancelled/failed");
-        }else {
+        } else {
             Dataset dataset = Parser.fromScanner(new Scanner(System.in)).normalize().preselect(PRESELECTION_LIMIT);
-            clusters = new ClusterRow(dataset);
+            ClusterRow clusters = new ClusterRow(dataset);
 
-            String distanceMeasure = ui.askForChoice("Please select the distance measure", "Manhattan", "Euclidean", "Pearson");
-            String clusterMethod = ui.askForChoice("Please select the clustering method", "Single", "Average", "Complete");
-            ClusterMethod cm = getClusteringMethod(clusterMethod, getDistanceMeasure(distanceMeasure));
+            String distanceMeasure = askForDistanceMeasure();
+            String clusterMethod = askForClusterMethod();
+            ClusterMethod cm = getClusterMethod(clusterMethod, getDistanceMeasure(distanceMeasure));
             clusterer = new Clusterer(clusters, cm, dataset.getClusterLimit());
 
             String view = ui.askForChoice("Please select the view", "Cartesian", "Dendrogram");
-            ui.extractData(dataset, clusterer);
+            ui.getDatasetInfo(dataset).getClustererInfo(clusterer);
             ui.useView(view);
-
-            ui.render(clusters);
+            ui.render(clusterer.getClusters());
         }
+    }
+
+    public void start() throws FileNotFoundException {
+        makeViewFromFile();
         processEvents(ui);
     }
 

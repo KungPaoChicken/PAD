@@ -16,5 +16,7 @@ public interface ClusterMethod {
 
     DistanceMeasure getDistanceMeasure();
 
+    void setDistanceMeasure(DistanceMeasure distanceMeasure);
+
     String getName();
 }

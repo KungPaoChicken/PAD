@@ -8,6 +8,7 @@ import ui.Colour;
 import ui.DrawUserInterface;
 
 public class Dendrogram implements View {
+    private static final String NAME = "Dendrogram";
     private static final Colour BLACK = new Colour(0, 0, 0);
     //Reserved space for text labels
     //Because getTextWidth()'s implementation returns the same value for EVERY PIECE OF STRING
@@ -25,6 +26,11 @@ public class Dendrogram implements View {
         padding = graphPadding;
         totalUnitSize = unitSize;
         maxClusterDepth = 0;
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Override
