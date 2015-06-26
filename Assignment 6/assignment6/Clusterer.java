@@ -16,7 +16,7 @@ public class Clusterer {
         clusteringLimit = limit;
     }
 
-    public ClusterMethod getClusterMethod(){
+    public ClusterMethod getClusterMethod() {
         return clusterer;
     }
 
@@ -30,7 +30,7 @@ public class Clusterer {
         return this;
     }
 
-    public ClusterRow getClusters(){
+    public ClusterRow getClusters() {
         return clusters;
     }
 

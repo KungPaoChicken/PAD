@@ -59,10 +59,10 @@ public class ClusterRow {
         return this;
     }
 
-    public ClusterRow copy(){
-        Cluster[] clustersArray=new Cluster[length];
+    public ClusterRow copy() {
+        Cluster[] clustersArray = new Cluster[length];
         for (int i = 0; i < clusters.length; i++) {
-            clustersArray[i]=clusters[i];
+            clustersArray[i] = clusters[i];
         }
         return new ClusterRow(clustersArray);
     }

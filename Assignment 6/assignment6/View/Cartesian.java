@@ -7,7 +7,7 @@ import ui.Colour;
 import ui.DrawUserInterface;
 
 public class Cartesian implements View {
-    private static final String NAME="Cartesian";
+    private static final String NAME = "Cartesian";
     private static final Colour BLACK = new Colour(0, 0, 0);
     //getTextHeight gives a constant anyway
     private static final int TEXT_HEIGHT = 21;
@@ -30,7 +30,7 @@ public class Cartesian implements View {
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return NAME;
     }
 

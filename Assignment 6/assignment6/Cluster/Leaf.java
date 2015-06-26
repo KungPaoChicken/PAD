@@ -6,8 +6,8 @@ import assignment6.UnitRow;
 public class Leaf implements Cluster {
     private Unit leaf;
 
-    public Leaf(Unit unit){
-        leaf=unit;
+    public Leaf(Unit unit) {
+        leaf = unit;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class Leaf implements Cluster {
 
     @Override
     public UnitRow getUnits() {
-        return new UnitRow(1).addUnit(leaf);
+        return new UnitRow(getWidth()).addUnit(leaf);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class Leaf implements Cluster {
     }
 
     @Override
-    public Leaf copy(){
-        return new Leaf(leaf.copy());
+    public Leaf copy() {
+        return new Leaf(getUnits().unitAt(0).copy());
     }
 }

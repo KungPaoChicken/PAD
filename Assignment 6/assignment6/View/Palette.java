@@ -27,8 +27,8 @@ public class Palette {
 
     private int i;
 
-    Palette(){
-        i=0;
+    Palette() {
+        i = 0;
     }
 
     public Colour nextColour() {
@@ -39,6 +39,6 @@ public class Palette {
     }
 
     private Colour colourFromRGBArray(int[] colourArray) {
-        return new Colour(colourArray[0],colourArray[1],colourArray[2]);
+        return new Colour(colourArray[0], colourArray[1], colourArray[2]);
     }
 }

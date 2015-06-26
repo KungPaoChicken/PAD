@@ -64,7 +64,7 @@ public class Clustering {
         }
     }
 
-    private void showClustersNames(String name){
+    private void showClustersNames(String name) {
         for (String action : ClusterUI.ACTIONS) {
             if (name.equals(action)) {
                 return;

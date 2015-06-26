@@ -4,7 +4,7 @@ import assignment6.Cluster.Cluster;
 import assignment6.DistanceMeasure.DistanceMeasure;
 
 public class SingleLinkage implements ClusterMethod {
-    private static final String NAME="Single Linkage";
+    private static final String NAME = "Single Linkage";
     private DistanceMeasure method;
 
     public SingleLinkage(DistanceMeasure distanceMeasure) {
@@ -23,17 +23,17 @@ public class SingleLinkage implements ClusterMethod {
     }
 
     @Override
-    public DistanceMeasure getDistanceMeasure(){
+    public DistanceMeasure getDistanceMeasure() {
         return method;
     }
 
     @Override
-    public void setDistanceMeasure(DistanceMeasure distanceMeasure){
-        method=distanceMeasure;
+    public void setDistanceMeasure(DistanceMeasure distanceMeasure) {
+        method = distanceMeasure;
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return NAME;
     }
 }

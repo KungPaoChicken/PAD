@@ -9,7 +9,7 @@ public class UnitRow {
         length = 0;
     }
 
-    public int size(){
+    public int size() {
         return length;
     }
 
@@ -19,37 +19,37 @@ public class UnitRow {
         return this;
     }
 
-    public UnitRow addUnits(UnitRow units){
-        for(int i=0;i<units.size();i++){
+    public UnitRow addUnits(UnitRow units) {
+        for (int i = 0; i < units.size(); i++) {
             addUnit(units.unitAt(i));
         }
         return this;
     }
 
     public Unit unitAt(int index) {
-        if (index >= length) {
+        if (index >= size()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
         return units[index];
     }
 
     public String nameAt(int index) {
-        if (index >= length) {
+        if (index >= size()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
         return unitAt(index).getName();
     }
 
     public double elementAt(int rowIndex, int variableIndex) {
-        if (rowIndex >= length) {
+        if (rowIndex >= size()) {
             throw new ArrayIndexOutOfBoundsException(rowIndex);
         }
         return unitAt(rowIndex).elementAt(variableIndex);
     }
 
-    public UnitRow copy(){
-        UnitRow copy=new UnitRow(length);
-        for (int i = 0; i < length; i++) {
+    public UnitRow copy() {
+        UnitRow copy = new UnitRow(size());
+        for (int i = 0; i < size(); i++) {
             copy.addUnit(unitAt(i).copy());
         }
         return copy;

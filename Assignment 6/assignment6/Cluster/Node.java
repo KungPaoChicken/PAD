@@ -10,6 +10,14 @@ public class Node implements Cluster {
         this.child2 = child2;
     }
 
+    public Cluster getChild1() {
+        return child1;
+    }
+
+    public Cluster getChild2() {
+        return child2;
+    }
+
     @Override
     //Maximum of the edge counts of the path between this node and an underlying leaf, aka. height in trees
     public int getDepth() {
@@ -23,9 +31,9 @@ public class Node implements Cluster {
     }
 
     @Override
-    //Returns all units contained in this cluster, aka. flatten
+    //Returns all leafs contained in this node
     public UnitRow getUnits() {
-        return new UnitRow(getWidth()).addUnits(child1.getUnits()).addUnits(child2.getUnits());
+        return new UnitRow(getWidth()).addUnits(getChild1().getUnits()).addUnits(getChild2().getUnits());
     }
 
     @Override
@@ -34,15 +42,7 @@ public class Node implements Cluster {
     }
 
     @Override
-    public Node copy(){
-        return new Node(child1.copy(),child2.copy());
-    }
-
-    public Cluster getChild1(){
-        return child1;
-    }
-
-    public Cluster getChild2(){
-        return child2;
+    public Node copy() {
+        return new Node(child1.copy(), child2.copy());
     }
 }

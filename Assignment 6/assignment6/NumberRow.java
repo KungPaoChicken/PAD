@@ -9,7 +9,7 @@ public class NumberRow {
         length = 0;
     }
 
-    public int size(){
+    public int size() {
         return length;
     }
 
@@ -20,15 +20,15 @@ public class NumberRow {
     }
 
     public NumberRow changeNumberTo(int index, double newNumber) {
-        if (index >= length) {
+        if (index >= size()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
-        numbers[index]=newNumber;
+        numbers[index] = newNumber;
         return this;
     }
 
     public double numberAt(int index) {
-        if (index >= length) {
+        if (index >= size()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
         return numbers[index];
@@ -37,7 +37,7 @@ public class NumberRow {
     public int maxIndex() {
         double maxValue = numbers[0];
         int maxIndex = 0;
-        for (int i = 1; i < length; i++) {
+        for (int i = 1; i < size(); i++) {
             if (numbers[i] > maxValue) {
                 maxValue = numbers[i];
                 maxIndex = i;
@@ -46,9 +46,9 @@ public class NumberRow {
         return maxIndex;
     }
 
-    public NumberRow copy(){
-        NumberRow copy=new NumberRow(length);
-        for(double n:numbers){
+    public NumberRow copy() {
+        NumberRow copy = new NumberRow(length);
+        for (double n : numbers) {
             copy.addNumber(n);
         }
         return copy;

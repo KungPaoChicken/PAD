@@ -122,11 +122,11 @@ public class Dataset {
 
     private double standardDeviationOfColumn(int index) {
         double mean = meanOfColumn(index);
-        double totalSquaredDifference = 0;
+        double sumOfSquaredDifferences = 0;
         for (int i = 0; i < elementsSize; i++) {
-            totalSquaredDifference += Math.pow(units.elementAt(i, index) - mean, 2);
+            sumOfSquaredDifferences += Math.pow(units.elementAt(i, index) - mean, 2);
         }
-        return Math.sqrt(totalSquaredDifference / (elementsSize - 1));
+        return Math.sqrt(sumOfSquaredDifferences / (elementsSize - 1));
     }
 
     private double meanOfColumn(int index) {

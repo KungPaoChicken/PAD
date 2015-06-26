@@ -21,6 +21,14 @@ public class Unit {
         return variables.numberAt(index);
     }
 
+    public double calculateMean() {
+        double sum = 0;
+        for (int i = 0; i < size(); i++) {
+            sum += elementAt(i);
+        }
+        return sum / size();
+    }
+
     public Unit copy() {
         return new Unit(name, variables.copy());
     }

@@ -10,7 +10,7 @@ public class Parser {
         elementSize = scanner.nextInt();
         variableSize = scanner.nextInt();
 
-        String elementType=scanner.next();
+        String elementType = scanner.next();
         String[] variableNames = scanVariableNames(scanner);
 
         scanner.nextLine();  //Going pass the header line
@@ -28,7 +28,7 @@ public class Parser {
         return variableNames;
     }
 
-    private static UnitRow scanUnits(Scanner scanner){
+    private static UnitRow scanUnits(Scanner scanner) {
         UnitRow units = new UnitRow(elementSize);
         for (int i = 0; i < elementSize; i++) {
             if (scanner.hasNextLine()) {
