@@ -68,7 +68,6 @@ public class Dataset {
         return this;
     }
 
-    //Suggest a way to compare results with the Manual, unsorted results are incredibly difficult to check
     //Preselection generates a whole new object and let the garbage collector have the old one
     //Selecting something on the other hand is sacrificing others
     public Dataset preselect(int limit) {
@@ -88,9 +87,9 @@ public class Dataset {
         }
 
         //Constructing the new dataset
-        String[] names = new String[limit];
+        String[] preselectedNames = new String[limit];
         for (int i = 0; i < limit; i++) {
-            names[i] = variableNameAt(preselectedIndexes[i]);
+            preselectedNames[i] = variableNameAt(preselectedIndexes[i]);
         }
 
         UnitRow preselectedRows = new UnitRow(limit);
@@ -102,7 +101,7 @@ public class Dataset {
             preselectedRows.addUnit(new Unit(unitNameAt(i), variables));
         }
 
-        return new Dataset(clusterLimit, elementsSize, limit, elementType, names, preselectedRows);
+        return new Dataset(clusterLimit, elementsSize, limit, elementType, preselectedNames, preselectedRows);
     }
 
     private double minOfColumn(int index) {
@@ -121,14 +120,6 @@ public class Dataset {
         return max;
     }
 
-    private double meanOfColumn(int index) {
-        double sum = 0;
-        for (int i = 0; i < elementsSize; i++) {
-            sum += units.elementAt(i, index);
-        }
-        return sum / elementsSize;
-    }
-
     private double standardDeviationOfColumn(int index) {
         double mean = meanOfColumn(index);
         double totalSquaredDifference = 0;
@@ -136,5 +127,13 @@ public class Dataset {
             totalSquaredDifference += Math.pow(units.elementAt(i, index) - mean, 2);
         }
         return Math.sqrt(totalSquaredDifference / (elementsSize - 1));
+    }
+
+    private double meanOfColumn(int index) {
+        double sum = 0;
+        for (int i = 0; i < elementsSize; i++) {
+            sum += units.elementAt(i, index);
+        }
+        return sum / elementsSize;
     }
 }

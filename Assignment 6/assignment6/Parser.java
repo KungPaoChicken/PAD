@@ -1,27 +1,19 @@
 package assignment6;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Parser {
-
-    static int elementSize, variableSize;
-
-    public static Dataset fromFile(File file) throws FileNotFoundException {
-        Scanner scanner = new Scanner(file);
-        return fromScanner(scanner);
-    }
+    private static int elementSize, variableSize;
 
     public static Dataset fromScanner(Scanner scanner) {
         int clusterLimit = scanner.nextInt();
         elementSize = scanner.nextInt();
         variableSize = scanner.nextInt();
 
-        String elementType=scanner.next(); //Skipping the first item of the header (type of variables)
+        String elementType=scanner.next();
         String[] variableNames = scanVariableNames(scanner);
 
-        scanner.nextLine();  //Getting pass the header line
+        scanner.nextLine();  //Going pass the header line
         UnitRow units = scanUnits(scanner);
 
         scanner.close();

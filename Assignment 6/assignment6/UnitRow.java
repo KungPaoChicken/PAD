@@ -37,20 +37,20 @@ public class UnitRow {
         if (index >= length) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
-        return units[index].getName();
+        return unitAt(index).getName();
     }
 
     public double elementAt(int rowIndex, int variableIndex) {
         if (rowIndex >= length) {
             throw new ArrayIndexOutOfBoundsException(rowIndex);
         }
-        return units[rowIndex].elementAt(variableIndex);
+        return unitAt(rowIndex).elementAt(variableIndex);
     }
 
     public UnitRow copy(){
         UnitRow copy=new UnitRow(length);
         for (int i = 0; i < length; i++) {
-            copy.units[i]=units[i].copy();
+            copy.addUnit(unitAt(i).copy());
         }
         return copy;
     }

@@ -97,7 +97,7 @@ public class Clustering {
                         ui.getClustererInfo(clusterer).render(clusterer.getClusters());
                         break;
                     case ClusterUI.TOGGLE_VIEW:
-                        clusterer.reset();
+//                        clusterer.reset();
                         ui.toggleView().render(clusterer.getClusters());
                         break;
                 }
